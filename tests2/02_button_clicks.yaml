@@ -1,0 +1,47 @@
+name: "Button Interactions"
+description: "Verifies CTA buttons, modal triggers, and form submission buttons"
+base_url: "https://example.com"
+timeout: 5
+
+steps:
+  - id: open_landing
+    action: navigate
+    url: "/landing"
+
+  - id: click_cta_button
+    action: click
+    selector: "css:button.btn-primary >> text=Get Started"
+    assert:
+      element_visible: "css:#signup-modal"
+
+  - id: close_modal
+    action: click
+    selector: "css:.modal .btn-close"
+    assert:
+      element_hidden: "css:#signup-modal"
+
+  - id: navigate_to_login
+    action: navigate
+    url: "/login"
+
+  - id: type_username
+    action: type
+    selector: "css:input[name='username']"
+    value: "testuser@example.com"
+
+  - id: type_password
+    action: type
+    selector: "css:input[name='password']"
+    value: "TestPassword123"
+
+  - id: click_submit
+    action: click
+    selector: "css:button[type='submit']"
+    assert:
+      url_contains: "/dashboard"
+      element_visible: "css:.user-greeting"
+
+  - id: click_disabled_button
+    action: click
+    selector: "css:button#locked-feature"
+    expect_disabled: true

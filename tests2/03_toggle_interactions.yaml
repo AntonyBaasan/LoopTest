@@ -1,0 +1,54 @@
+name: "Toggle Interactions"
+description: "Verifies toggle switches, checkboxes, and expandable sections"
+base_url: "https://example.com"
+timeout: 5
+
+steps:
+  - id: open_settings
+    action: navigate
+    url: "/settings"
+    assert:
+      title_contains: "Settings"
+
+  - id: enable_notifications_toggle
+    action: toggle
+    selector: "css:#toggle-notifications"
+    set_state: "on"
+    assert:
+      attribute:
+        selector: "css:#toggle-notifications"
+        name: "aria-checked"
+        value: "true"
+
+  - id: disable_dark_mode_toggle
+    action: toggle
+    selector: "css:#toggle-dark-mode"
+    set_state: "off"
+    assert:
+      element_missing_class:
+        selector: "css:body"
+        class: "dark-mode"
+
+  - id: check_newsletter_checkbox
+    action: toggle
+    selector: "css:input[name='newsletter']"
+    set_state: "on"
+    assert:
+      attribute:
+        selector: "css:input[name='newsletter']"
+        name: "checked"
+        value: "true"
+
+  - id: expand_advanced_section
+    action: toggle
+    selector: "css:button.accordion-toggle >> text=Advanced Options"
+    set_state: "on"
+    assert:
+      element_visible: "css:#advanced-options-panel"
+
+  - id: collapse_advanced_section
+    action: toggle
+    selector: "css:button.accordion-toggle >> text=Advanced Options"
+    set_state: "off"
+    assert:
+      element_hidden: "css:#advanced-options-panel"

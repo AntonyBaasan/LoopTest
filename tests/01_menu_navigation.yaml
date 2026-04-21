@@ -1,0 +1,37 @@
+name: "Header Navigation"
+description: "Verifies the header links on the IANA Example Domains page"
+base_url: "https://www.iana.org"
+timeout: 5
+
+steps:
+  - id: open_example_domains
+    action: navigate
+    url: "/help/example-domains"
+    assert:
+      title_contains: "Example Domains"
+      element_visible: "css:h1"
+      element_text:
+        selector: "css:h1"
+        contains: "Example Domains"
+
+  - id: hover_about_link
+    action: hover
+    selector: "css:header .navigation >> text=About"
+
+  - id: click_header_about
+    action: click
+    selector: "css:header .navigation a[href='/about']"
+    assert:
+      url_contains: "/about"
+
+  - id: return_to_example_domains
+    action: navigate
+    url: "/help/example-domains"
+    assert:
+      url_contains: "/help/example-domains"
+
+  - id: click_header_domains
+    action: click
+    selector: "css:header .navigation a[href='/domains']"
+    assert:
+      url_contains: "/domains"

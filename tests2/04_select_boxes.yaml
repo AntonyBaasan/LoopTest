@@ -1,0 +1,64 @@
+name: "Select Box Interactions"
+description: "Verifies native selects, custom dropdowns, and cascading selects"
+base_url: "https://example.com"
+timeout: 5
+
+steps:
+  - id: open_profile
+    action: navigate
+    url: "/profile"
+    assert:
+      title_contains: "Profile"
+
+  - id: select_country
+    action: select
+    selector: "css:select#country"
+    by: "visible_text"
+    value: "United States"
+    assert:
+      attribute:
+        selector: "css:select#country"
+        name: "value"
+        value: "US"
+
+  - id: select_state_by_value
+    action: select
+    selector: "css:select#state"
+    by: "value"
+    value: "CA"
+    assert:
+      attribute:
+        selector: "css:select#state"
+        name: "value"
+        value: "CA"
+
+  - id: open_preferences
+    action: navigate
+    url: "/preferences"
+
+  - id: select_language_by_index
+    action: select
+    selector: "css:select#language"
+    by: "index"
+    value: 2
+    assert:
+      element_text:
+        selector: "css:select#language option:checked"
+        contains: "Spanish"
+
+  - id: select_custom_dropdown_timezone
+    action: custom_select
+    trigger_selector: "css:.dropdown-trigger#timezone-picker"
+    option_selector: "css:.dropdown-option >> text=Pacific Time (PT)"
+    assert:
+      element_text:
+        selector: "css:.dropdown-trigger#timezone-picker .selected-value"
+        contains: "Pacific Time"
+
+  - id: select_plan_tier
+    action: select
+    selector: "css:select#plan"
+    by: "visible_text"
+    value: "Professional"
+    assert:
+      element_visible: "css:.plan-features.professional"

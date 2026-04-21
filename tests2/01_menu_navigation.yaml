@@ -1,0 +1,35 @@
+name: "Menu Bar Navigation"
+description: "Verifies top-level nav links and dropdown sub-items route correctly"
+base_url: "https://www.iana.org/help/example-domains"
+timeout: 5
+
+steps:
+  - id: open_home
+    action: navigate
+    url: "/"
+    assert:
+      title_contains: "Example"
+
+  - id: click_top_nav_about
+    action: click
+    selector: "css:.nav-link[href='/about']"
+    assert:
+      url_contains: "/about"
+
+  - id: hover_products_menu
+    action: hover
+    selector: "css:.nav-item.dropdown >> text=Products"
+
+  - id: click_dropdown_item
+    action: click
+    selector: "css:.dropdown-menu a[href='/products/pricing']"
+    assert:
+      url_contains: "/products/pricing"
+      element_visible: "css:h1.page-title"
+
+  - id: click_nested_submenu
+    action: menu_navigate
+    menu_selector: "css:#main-nav >> text=Solutions"
+    submenu_selector: "css:.submenu >> text=Enterprise"
+    assert:
+      url_contains: "/solutions/enterprise"
