@@ -1,35 +1,37 @@
-name: "Menu Bar Navigation"
-description: "Verifies top-level nav links and dropdown sub-items route correctly"
-base_url: "https://www.iana.org/help/example-domains"
+name: "Header Navigation"
+description: "Verifies the header links on the IANA Example Domains page"
+base_url: "https://www.iana.org"
 timeout: 5
 
 steps:
-  - id: open_home
+  - id: open_example_domains
     action: navigate
-    url: "/"
+    url: "/help/example-domains"
     assert:
-      title_contains: "Example"
+      title_contains: "Example Domains"
+      element_visible: "css:h1"
+      element_text:
+        selector: "css:h1"
+        contains: "Example Domains"
 
-  - id: click_top_nav_about
+  - id: hover_about_link
+    action: hover
+    selector: "css:header .navigation >> text=About"
+
+  - id: click_header_about
     action: click
-    selector: "css:.nav-link[href='/about']"
+    selector: "css:header .navigation a[href='/about']"
     assert:
       url_contains: "/about"
 
-  - id: hover_products_menu
-    action: hover
-    selector: "css:.nav-item.dropdown >> text=Products"
+  - id: return_to_example_domains
+    action: navigate
+    url: "/help/example-domains"
+    assert:
+      url_contains: "/help/example-domains"
 
-  - id: click_dropdown_item
+  - id: click_header_domains
     action: click
-    selector: "css:.dropdown-menu a[href='/products/pricing']"
+    selector: "css:header .navigation a[href='/domains']"
     assert:
-      url_contains: "/products/pricing"
-      element_visible: "css:h1.page-title"
-
-  - id: click_nested_submenu
-    action: menu_navigate
-    menu_selector: "css:#main-nav >> text=Solutions"
-    submenu_selector: "css:.submenu >> text=Enterprise"
-    assert:
-      url_contains: "/solutions/enterprise"
+      url_contains: "/domains"
