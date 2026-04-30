@@ -34,6 +34,7 @@ def main():
     print(f"{c('UI Test CLI', WHITE, BOLD)}  {c('—', DIM)}  {len(files)} file(s) found\n")
 
     options = Options()
+    options.set_capability("acceptInsecureCerts", True) # allow insecure connections
     if args.headless:
         options.add_argument("--headless=new")
         options.add_argument("--no-sandbox")
